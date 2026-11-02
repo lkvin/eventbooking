@@ -11,8 +11,8 @@ export const createEvent = async (createEventPayload) =>{
         start_time : startTime
     }
     try {
-        await db('events').insert({eventData});
-        const event =  (await db('events').select('*').where({uuid})).first();
+        await db('events').insert(eventData);
+        const event =  await db('events').select('*').where({uuid}).first();
         return event;
     } catch (error) {
         throw new Error(error.message);
@@ -25,10 +25,11 @@ export const getEvent = async (page,limit) =>{
         const event = await db('events').select("*")
                             .limit(limit)
                             .offset(offset);
+        const [{total}] = await db('events').count('id as total');
         return {
             event,
             pagination : {
-                total : page,
+                totalRow : total,
                 limit: Number(limit)
             }
         }
@@ -38,7 +39,7 @@ export const getEvent = async (page,limit) =>{
 }
 export const getEventByID = async (eventId) =>{
     try {
-        const event = await db('events').select("*").where({id:eventId});
+        const event = await db('events').select("*").where({id:eventId}).first();
         return event;   
     } catch (error) {
         throw new Error(error.message);
@@ -47,7 +48,7 @@ export const getEventByID = async (eventId) =>{
 
 export const updateEvent = async (eventId, updateData) =>{
     try {
-        const rowAffected = await db('events').where({id:eventId}).update({updateData});
+        const rowAffected = await db('events').where({id:eventId}).update(updateData);
 
         if (rowAffected == 0){
             return null;
