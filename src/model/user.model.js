@@ -4,7 +4,7 @@ export const createUser = async (userPayload) =>{
     const {name,phoneNumber,role} = userPayload;
     const uuid = crypto.randomUUID();
     const userData = {
-        uuid : uuid,
+        id : uuid,
         name : name,
         phoneNumber : phoneNumber,
     }
