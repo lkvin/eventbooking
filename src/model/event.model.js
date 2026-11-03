@@ -4,7 +4,7 @@ export const createEvent = async (createEventPayload) =>{
     const {name,venueID,date,startTime} = createEventPayload;
     const uuid = crypto.randomUUID();
     const eventData = {
-        uuid : uuid,
+        id : uuid,
         name : name,
         venue_id : venueID,
         date : date,
