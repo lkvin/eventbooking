@@ -19,14 +19,14 @@ export const serviceSMS = {
 
     },
     verify: (phoneNumber, otp) => {
-        const record = otpStore[phoneNumber];
+        const record = storeOTP[phoneNumber];
 
         if (!record || Date.now() > record.expiresAt || record.otp !== otp) {
             return { valid: false, error: "Invalid or expired OTP" };
         }
 
         // Clear OTP after successful use so it can't be reused
-        delete otpStore[phoneNumber];
+        delete storeOTP[phoneNumber];
 
         return { valid: true };
     }
