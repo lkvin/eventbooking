@@ -1,0 +1,15 @@
+### 
+POST http://localhost:3000/api/auth/otp/send
+Content-Type: application/json
+
+{
+    "phoneNumber":"098765432"
+}
+###
+POST http://localhost:3000/api/auth/otp/verify
+Content-Type: application/json
+
+{
+    "phoneNumber":"098765432",
+    "otp":"900294"
+}
