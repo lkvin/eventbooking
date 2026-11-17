@@ -1,5 +1,6 @@
 import { createUser, findUserByPhoneNumber } from "../model/user.model.js";
 import { serviceSMS } from "../service/mockSMS.js";
+import { errorResponse, successResponse } from "../utils/response.js";
 
 export const reqOTP = async(req , res) =>{
     const {phoneNumber} = req.body;
@@ -16,7 +17,8 @@ export const verifyOTP = async (req,res) =>{
     try {
         const verify = serviceSMS.verify(phoneNumber,otp);
         if(!verify.valid){
-            return res.status(400).json({success:false,message:"invalid OTP"});
+            // return res.status(400).json({success:false,message:"invalid OTP"});
+            return errorResponse(res,400,"Invalid OTP")
         }
         const user = await findUserByPhoneNumber(phoneNumber);
         
@@ -30,11 +32,14 @@ export const verifyOTP = async (req,res) =>{
                 }
             const user = await createUser(userPayload);
             console.log("user created");
-            return res.status(200).json({success:true,data:user});
+            // return res.status(200).json({success:true,data:user});
+            return successResponse(res,200,"New user created",user);
         }
         
-        return res.status(200).json({success:true,data:user});
+        // return res.status(200).json({success:true,data:user});
+        return successResponse(res,200,"Successfully logged in",user);
     } catch (error) {
-        return res.status(400).json(error.message);
+        // return res.status(400).json(error.message);
+        return errorResponse(res);
     }
 }
